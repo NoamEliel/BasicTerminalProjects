@@ -1,0 +1,144 @@
+result.cs:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class Results
+    {
+        int[] arr;
+        string name;
+
+
+        public Results(int[] arr, string name)
+        {
+            this.arr = arr;
+            this.name = name;
+        }
+
+
+
+
+
+        // get functions 
+        public string GetName() { return this.name; }
+        public int[] GetArr() { return this.arr; }
+
+        // set functions 
+        public void SetArr(int[] arr) { this.arr = arr; }
+        public void SetName(string name) { this.name = name; }
+
+
+
+    }
+}
+
+
+
+
+
+
+Program.cs:
+using Exercise;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+       
+        public static int Deltas(bool isLonger, Results results)
+        {
+            //if isLonger == true
+            if (isLonger)
+            {
+                //get array, put it into variable
+                int[] arr = results.GetArr();
+
+                //make an integer that will collect the differences
+                int collective_difference = 0;
+
+                //get the first slot of the array
+                int previous = arr[0];
+                //new for loop to run from slot 1 
+                for (int i = 1; i < arr.Length; i++)
+                {
+                    //check if current i of array is larger than previous number. if yes, add the difference to collective difference
+                    if (previous < arr[i])
+                    {
+                        collective_difference += (arr[i] - previous);
+                    }     
+                    //then make arr = i, which would be the next iteration
+                    previous = arr[i];
+                }
+                return collective_difference;
+
+            }
+            if (!isLonger)
+            {
+                //get array, put it into variable
+                int[] arr = results.GetArr();
+
+                //make an integer that will collect the differences
+                int collective_difference = 0;
+
+                //get the first slot of the array
+                int previous = arr[0];
+                //new for loop to run from slot 1 
+                for (int i = 1; i < arr.Length; i++)
+                {
+                    //check if current i of array is smaller than previous number. if yes, add the difference to collective difference
+                    if (previous > arr[i])
+                    {
+                         collective_difference += (previous - arr[i]);
+                    }
+                    //then make arr = i, which would be the next iteration
+                    previous = arr[i];
+                }
+                return collective_difference;
+
+            }
+
+            //if all fails (which is impossible because isLonger is a bool), return 0
+            return 0;
+
+
+
+
+
+        }
+        public static bool Improving(Results results)
+        {
+            //check if improving > worsening
+            if (Deltas(false,results) > Deltas(true, results))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        static void Main(string[] args)
+        {
+            //results class has 2 variables:
+            //arr (int[] arr  for the amount of time (in seconds) of the 50 meter swim each day
+            //string name (name of the swimmer)
+            int[] arr = new int[] { 45, 52, 50, 53, 38, 38, 42 };
+            Results results = new Results(arr,"Daniel");
+            Console.WriteLine(Deltas(false, results));
+            Console.WriteLine(Improving(results));
+            Console.ReadKey();
+        }
+    }
+}
+
+
