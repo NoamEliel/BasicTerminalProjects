@@ -1,0 +1,69 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        public static bool success(int num)
+        {
+            bool win = false;
+
+            //input points
+            double[] arrows = new double[num];
+            for (int i = 0; i < num; i++)
+            {
+                Console.WriteLine("How many points for arrow number: " + (i+1));
+                arrows[i] = double.Parse(Console.ReadLine());
+            }
+            //check for average score
+            double average = 0;
+            for (int i = 0; i < arrows.Length; i++)
+            {
+                average += arrows[i];
+            }
+            average=average/arrows.Length;
+
+            //check if average score is above 5
+            if (average >= 5) { win=true; }
+
+            //check if MOST SHOTS are scored over 6
+            int oversix = 0;
+            for (int i = 0; i < arrows.Length; i++)
+            {
+                if (arrows[i] >= 6)
+                {
+                    oversix++;
+                }
+            }
+            if (oversix > arrows.Length / 2) { win=true; }
+
+            //check if he scored 10 in one shot
+            for (int i = 0; i < arrows.Length; i++)
+            {
+                if (arrows[i] == 10) { win = true; }
+            }
+            //Return False/True value
+            if (win == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine(success(5));
+            Console.ReadKey();
+        }
+    }
+}
+
