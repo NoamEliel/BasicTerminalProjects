@@ -1,0 +1,125 @@
+TourPackage:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class TourPackage
+    {
+        public int id;
+        public int price;
+        public int maxTime;
+        public int maxData;
+        public int extra;
+
+        public int GetId() { return this.id; }
+        public int GetPrice() { return this.price; }
+        public int GetMaxTime() { return this.maxTime; }
+        public int GetMaxData() { return this.maxData; }
+        public int GetExtra() { return this.extra; }
+
+        public TourPackage(int id, int price, int maxTime, int maxData, int extra)
+        {
+            this.id = id;
+            this.price = price;
+            this.maxTime = maxTime;
+            this.maxData=maxData;
+            this.extra = 0;
+
+        }
+        public void SetExtra(int minutes, int usage)
+        {
+            if (minutes>this.maxTime)
+            {
+                this.extra += minutes - this.maxTime;
+            }
+            if (usage>this.maxData)
+            {
+                this.extra += 2 * (usage - this.maxData);
+            }
+        }}}
+Program.cs:
+using Exercise;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+       public static int Calculate (TourPackage[] packages)
+        {
+            int count = 0;
+            for (int i = 0; i < packages.Length; i++)
+            {
+                if (packages[i].GetExtra() > 0)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public static int[] Customers(TourPackage[] packages)
+        {
+            int count = 0;
+            int[] arr = new int[Calculate(packages)];
+            for (int i = 0; i < packages.Length; i++)
+            {
+                if (packages[i].GetExtra() > 0)
+                {
+                    arr[count] = packages[i].GetId();
+                    count++;
+                }
+            }
+            return arr;
+        }
+       
+        static void Main(string[] args)
+        {
+            // Array of TourPackage objects with maxTime = 120 and maxData = 10
+            TourPackage[] packages = new TourPackage[]
+            {
+                new TourPackage(1, 100, 120, 10, 0),
+                new TourPackage(2, 150, 120, 10, 0),
+                new TourPackage(3, 200, 120, 10, 0),
+                new TourPackage(4, 250, 120, 10, 0),
+                new TourPackage(5, 300, 120, 10, 0)
+            };
+
+            // Setting extra usage and time for each package (some with 0 extra)
+            packages[0].SetExtra(120, 10);  // No extra time or data usage (0 extra)
+            packages[1].SetExtra(130, 12);  // Over time and data (extra)
+            packages[2].SetExtra(115, 10);  // No extra time or data usage (0 extra)
+            packages[3].SetExtra(120, 8);   // No extra time or data usage (0 extra)
+            packages[4].SetExtra(150, 15);  // Over time and data (extra)
+
+
+
+            int[] arr = new int[] { };
+            for (int i = 0; i < packages.Length; i++)
+            {
+                Console.WriteLine(Customers(packages)[i]);
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
