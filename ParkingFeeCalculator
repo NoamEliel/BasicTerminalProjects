@@ -1,0 +1,189 @@
+MyTime.cs:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class MyTime
+    {
+        private int myMinute;
+        private int myHour;
+
+        public MyTime(int myMinute, int myHour)
+        {
+            this.myMinute = myMinute;
+            this.myHour = myHour;
+        }
+
+        public bool Before(MyTime other)
+        {
+            if (other.myHour<this.myHour)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public int diff(MyTime other)
+        {
+            int hours = this.myHour - other.myHour;
+            //make hours minutes
+            int minutes = (hours * 60);
+            //calculate the amount of minutes
+            minutes += (this.myMinute - other.myMinute);
+
+            return minutes;
+        }
+
+
+        public int getmyMinute() { return myMinute; }
+        public int getmyHour() {  return myHour; }
+        public void setmyMinute(int value) { myMinute = value; }
+        public void setmyHour(int value) { myHour = value; }
+
+
+
+
+    }
+}
+
+Parking.cs:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class Parking
+    {
+        public int id;
+        public MyTime inside;
+        public MyTime outside;
+       
+
+        public Parking(int id, MyTime inside, MyTime outside)
+        {
+           this.id = id;
+           this.inside = inside;
+           this.outside = outside;
+        }
+
+        public int getid() { return this.id; }
+        public MyTime getinside() { return this.inside; }
+        public MyTime getoutside() { return this.outside; }
+
+        public void setid(int id) { this.id = id;}
+        public void setinside(MyTime inside) { this.inside = inside;}
+        public void setoutside(MyTime outside) { this.outside = outside; }
+
+        public int Total()
+        {
+            return (getoutside().getmyMinute() - getinside().getmyMinute()) + ((getoutside().getmyHour() - getinside().getmyHour()) * 60);
+        }
+
+    }
+}
+
+
+
+
+
+
+
+Program.cs:
+using Exercise;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        public static void First(Parking[] cars)
+        {
+            int firstHour = cars[0].getinside().getmyHour();
+            int firstMinute = cars[0].getinside().getmyMinute();
+            int smallestCarId = cars[0].id;
+            int smallesthour = cars[0].getinside().getmyHour();
+            //check hour
+            for (int i = 1; i < cars.Length; i++)
+            {
+                int currentHour = cars[i].getinside().getmyHour();
+                int currentMinute = cars[i].getinside().getmyMinute();
+
+                if (firstHour > currentHour)
+                {
+                    
+                        smallestCarId = cars[i].id;
+                        firstHour = cars[i].getinside().getmyHour();
+                        firstMinute = cars[i].getinside().getmyMinute();
+                        smallesthour = cars[i].getinside().getmyHour();
+                }
+               
+                   
+            }
+            int smallestMinutes = cars[0].getinside().getmyMinute();
+
+            for (int i = 0; i < cars.Length; i++)
+            {
+
+                if (cars[i].getinside().getmyHour() == smallesthour)
+                {
+                    if (cars[i].getinside().getmyMinute() < smallestMinutes)
+                    {
+                        smallestCarId = cars[i].id;
+                    }
+                }
+            }
+           
+           
+            Console.WriteLine("car that entered earliest has the ID of: " + smallestCarId);
+        }
+        public static int SumMoney(Parking[] cars)
+        {
+            int totalbalance = 0;
+            for (int i = 0; i < cars.Length; i++)
+            {
+                if ((cars[i].Total()-120)>0)
+                {
+                    int overTimeMinutes = (cars[i].Total() - 120);
+                    totalbalance += overTimeMinutes;
+                }
+            }
+
+            return totalbalance;
+        }
+        
+        static void Main(string[] args)
+        {
+            Parking[] cars = new Parking[]
+           {
+                new Parking(1, new MyTime(30, 8), new MyTime(0, 10)),
+                new Parking(2, new MyTime(15, 9), new MyTime(30, 11)),
+                new Parking(3, new MyTime(6, 5), new MyTime(15, 9)),
+                new Parking(4, new MyTime(5, 5), new MyTime(30, 8)),
+                new Parking(5, new MyTime(50, 3), new MyTime(10, 7))
+           };
+
+
+
+
+
+            First(cars);
+            Console.WriteLine(SumMoney(cars));
+            Console.ReadKey();
+        }
+    }
+}
+
