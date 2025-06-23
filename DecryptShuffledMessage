@@ -1,0 +1,40 @@
+using Exercise;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        public static string OriginalText(string encrypted, int[] arr)
+        {
+            char[] original = new char[arr.Length];
+            for (int i = 0; i < original.Length; i++)
+            {
+                original[arr[i] - 1] = encrypted[i];
+                
+            }
+            string word = "";
+            for (int i = 0; i < original.Length; i++)
+            {
+                word += original[i];
+            }
+            return word;
+        }
+       
+        static void Main(string[] args)
+        {
+
+            //Study
+            //dyutS
+            string encrypted = "dyutS";
+            int[] study = new int[] {4,5,3,2,1};
+            Console.WriteLine(OriginalText(encrypted, study));
+            Console.ReadKey();
+        }
+    }
+}
