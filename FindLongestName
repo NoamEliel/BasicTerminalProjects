@@ -1,0 +1,9 @@
+public static string longestName(string[] names)
+  {
+      string longest = names[0];
+      for (int i = 1; i < names.Length; i++)
+      {
+          if (names[i].Length > longest.Length) {  longest = names[i]; }
+      }
+      return longest;
+  } 
