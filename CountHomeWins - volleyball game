@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class Program
+    {
+       
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter home team name");
+            string homeName = Console.ReadLine();
+            Console.WriteLine("Enter guest team score");
+            string guestName = Console.ReadLine();
+            Console.WriteLine("Enter home team score");
+            int homeScore = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter guest team score");
+            int guestScore = int.Parse(Console.ReadLine());
+
+            Volleyball Game = new Volleyball(homeName, guestName, homeScore, guestScore);
+            Console.WriteLine(Game);
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class Volleyball
+    {   //variables
+        private string HomeName;
+        private string GuestName;
+        private int HomeScore;
+        private int GuestScore;
+        //Constructor
+        public Volleyball(string homeName, string guestName, int homeScore, int guestScore)
+        {
+            this.HomeName = homeName;
+            this.GuestName = guestName;
+            this.HomeScore = homeScore;
+            this.GuestScore = guestScore;
+        }
+
+        // Get
+        public string GetHomeName(){ return HomeName; }
+        public string GetGuestName() { return GuestName; }
+        public int GetHomeScore() { return HomeScore; }
+        public int GetGuestScore() {return GuestScore;}
+        // Set
+
+        public void SetHomeName(string homeName) {HomeName = homeName; }
+        public void SetGuestName(string guestName) {GuestName = guestName;}
+        public void SetHomeScore(int homeScore) { HomeScore = homeScore; }
+        public void SetGuestScore(int guestScore) { GuestScore = guestScore; }
+        // ToString
+        public override string ToString()
+        {
+            return $"{HomeName} vs. {GuestName} ||||| Score: {HomeScore}-{GuestScore}";
+        }
+        public bool Winner()
+        {
+        if (this.guestScore > this.HomeScore)
+        {
+            return true;
+        }
+        else 
+        { 
+            return false; 
+        }
+  }
+ }
+}
