@@ -1,0 +1,62 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        public static int Discounts(int num, int age, bool city)
+        {
+            //make an int that will indicate the discounts
+            int indicator = 0;
+
+            //check if person is applicable for a discount on arnona
+            if (age >= 70)
+            {
+                //add 100 making them applicable
+                indicator += 100;
+            }
+            else
+            {
+                //add 200 making them inapplicable
+                indicator += 200;
+            }
+            //check if person is applicable for a discount on child care
+            if (num >= 3)
+            {
+                //add 10 making them applicable
+                indicator += 10;
+            }
+            else
+            {
+                //add 20 making them inapplicable
+                indicator += 20;
+            }
+            //check if person is applicable for a discount on parking cost
+            if (city == true)
+            {
+                //add 1 making them args
+                indicator += 1;
+            }
+            else
+            {
+                //add 2 making them inapplicable
+                indicator += 2;
+            }
+            return indicator;
+        }
+
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine(Discounts(4, 71, false));
+            Console.ReadKey();
+        }
+    }
+}
+
