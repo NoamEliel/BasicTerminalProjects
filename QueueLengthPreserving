@@ -1,0 +1,21 @@
+ public static int findQueueLength(Queue<int> queue)
+ {
+     int length = 0;
+     while (queue.IsEmpty() != true)
+     {
+         queue.Remove();
+         length++;
+     }
+     return length;
+ }
+ static void Main(string[] args)
+ {
+     Queue<int> queue = new Queue<int>();
+     Random rnd = new Random();
+     for (int i = 0; i < 3; i++)
+     {
+         queue.Insert(rnd.Next(1, 10));
+     }
+     Console.WriteLine(findQueueLength(queue));
+     Console.ReadKey();
+ }
