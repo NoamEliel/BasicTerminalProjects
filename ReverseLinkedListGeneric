@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    class Program
+    {
+
+        public class Node<T> //I copied the class from the classroom summery, I'll need to memorize it later, and understand why there's a need for <T>.
+        {
+            private T value;
+            private Node<T> next;
+            public Node(T value)
+            {
+                this.value = value;
+                this.next = null;
+            }
+            public Node(T value, Node<T> next)
+            {
+                this.value = value;
+                this.next = next;
+            }
+            /* הפעולה מחזירה את הערך של החוליה הנוכחית **/
+            public T GetValue()
+            {
+                return value;
+            }
+            /* הפעולה מחזירה את החוליה העוקבת לחוליה הנוכחית **/
+            public Node<T> GetNext()
+            {
+                return next;
+            }
+            /* הפעולה קובעת את ערך החוליה הנוכחית להיות  value **/
+            public void SetValue(T value)
+            {
+                this.value = value;
+            }
+            /* הפעולה קובעת את החוליה העוקבת לחוליה הנוכחית להיות החוליה next **/
+            public void SetNext(Node<T> next)
+            {
+                this.next = next;
+            }
+        }
+
+        public static Node<T> reverse<T>(Node<T> head)
+        {
+            Node<T> reversedHead = null;
+            Node<T> current = head;
+            while (current != null)
+            {
+                Node<T> newNode = new Node<T>(current.GetValue());
+                newNode.SetNext(reversedHead);
+                reversedHead = newNode;
+
+
+
+
+                current = current.GetNext();
+            }
+            
+
+            return reversedHead;
+        }
+        public static void printNode<T>(Node<T> head)
+        {
+            while (head != null)
+            {
+                Console.WriteLine(head.GetValue());
+                head = head.GetNext();
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Node<int> node5 = new Node<int>(5, null);
+            Node<int> node4 = new Node<int>(4, node5);
+            Node<int> node3 = new Node<int>(3, node4);
+            Node<int> node2 = new Node<int>(2, node3);
+            Node<int> node1 = new Node<int>(1, node2);
+            printNode(reverse(node1));
+
+
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
