@@ -1,0 +1,49 @@
+using Exercise;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        public static void Shuffle(int[] arr)
+        {
+            Random r1 = new Random();
+            Random r2 = new Random();
+            int max = (arr.Length-1);
+            int min = 0;
+            for (int i = 0; i < 30;)
+            {
+                int index1 = r1.Next(min,max);
+                int index2 = r2.Next(min,max);
+                if (index1 != index2)
+                {
+                    i++;
+                    int first = arr[index1];
+                    int second = arr[index2];
+                    arr[index1] = second;
+                    arr[index2] = first;
+                }
+            }
+            for (int i = 0; i <arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+
+        }
+       
+        static void Main(string[] args)
+        {
+            
+            int[] arr = new int[10] {0,2,4,6,8,10,12,14,16,18};
+            Shuffle(arr);
+            Console.ReadKey();
+        }
+    }
+}
+
