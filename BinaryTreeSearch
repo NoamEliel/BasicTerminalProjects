@@ -1,0 +1,42 @@
+ internal class Program
+ {
+     public static bool searchNumInTree(BinNode<int> tree, int num)
+     {
+
+         if (tree.GetValue() == num)
+         {
+             return true;
+         }
+
+         bool answer = false;
+         if (tree.GetRight() != null)
+         {
+             answer =  searchNumInTree(tree.GetRight(),num);
+         }
+         if (tree.GetLeft() != null)
+         {
+             answer = searchNumInTree(tree.GetLeft(), num);
+         }
+
+         return answer;
+     }
+
+     public static void Main()
+     {
+         BinNode<int> t1, t2, t3, t4, t5;
+
+         t4 = new BinNode<int>(-2);
+         t5 = new BinNode<int>(5);
+         t2 = new BinNode<int>(t4, 0, t5);
+         t3 = new BinNode<int>(10);
+         t1 = new BinNode<int>(t2, 7, t3);
+
+
+
+         Console.WriteLine(searchNumInTree(t1, 2));
+
+
+         Console.ReadLine();
+     }
+
+ }
