@@ -1,0 +1,87 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    class Program
+    {
+        public class Node
+        {
+            private int value;
+            private Node left;
+            private Node right;
+            public Node(int value, Node left, Node right)
+            {
+                this.value = value;
+                this.left = left;
+                this.right = right;
+            }
+            public Node getRight() { return this.right; }
+            public Node getLeft() { return this.left; }
+            public int getValue() { return this.value; }
+            //--------
+            public void setRight(Node right) { this.right = right; }
+            public void setLeft(Node left) { this.left = left; }
+            public void setValue(int value) { this.value = value; }
+
+        }
+
+
+        //from previous exercise :
+        public static int returnTreeEvenSum(Node head)
+        {
+            if (head == null)
+            {
+                return 0;
+            }
+            int sum = 0;
+            if (head.getValue() % 2 == 0)
+            {
+                sum = head.getValue();
+            }
+            sum += returnTreeEvenSum(head.getLeft());
+            sum += returnTreeEvenSum(head.getRight());
+
+
+            return sum;
+        }
+        public static int returnSumOfTree(Node head)
+        {
+            if (head == null) { return 0; }
+            int sum = head.getValue();
+            sum += returnSumOfTree(head.getLeft());
+            sum += returnSumOfTree(head.getRight());
+            return sum;
+        }
+        public static int returnAmountOfObjectsInTree(Node head)
+        {
+            if(head == null) { return 0; }
+            return returnAmountOfObjectsInTree(head.getLeft()) + returnAmountOfObjectsInTree(head.getRight()) + 1;
+        }
+        public static int returnAverageOfTree(Node head) { return returnSumOfTree(head) / returnAmountOfObjectsInTree(head); }
+
+        static void Main(string[] args)
+        {
+            Node three = new Node(3, null, null);
+            Node seven = new Node(7, null, null);
+            Node six = new Node(6, seven, three);
+            Node two = new Node(2, null, null);
+            Node one = new Node(1, six, two);
+            Console.WriteLine(returnSumOfTree(one));
+            Console.WriteLine(returnAmountOfObjectsInTree(one));
+            Console.WriteLine("----------------");
+            Console.WriteLine(returnAverageOfTree(one));
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
+
