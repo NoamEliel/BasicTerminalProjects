@@ -1,0 +1,133 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static ConsoleApp3.Program;
+
+namespace ConsoleApp3
+{
+    class Program
+    {
+
+        public class Node<T> //I copied the class from the classroom summery, I'll need to memorize it later, and understand why there's a need for <T>.
+        {
+            private T value;
+            private Node<T> next;
+            public Node(T value)
+            {
+                this.value = value;
+                this.next = null;
+            }
+            public Node(T value, Node<T> next)
+            {
+                this.value = value;
+                this.next = next;
+            }
+            /* הפעולה מחזירה את הערך של החוליה הנוכחית **/
+            public T GetValue()
+            {
+                return value;
+            }
+            /* הפעולה מחזירה את החוליה העוקבת לחוליה הנוכחית **/
+            public Node<T> GetNext()
+            {
+                return next;
+            }
+            /* הפעולה קובעת את ערך החוליה הנוכחית להיות  value **/
+            public void SetValue(T value)
+            {
+                this.value = value;
+            }
+            /* הפעולה קובעת את החוליה העוקבת לחוליה הנוכחית להיות החוליה next **/
+            public void SetNext(Node<T> next)
+            {
+                this.next = next;
+            }
+        }
+
+        public static void printNode<T>(Node<T> head)
+        {
+            while (head != null)
+            {
+                Console.WriteLine(head.GetValue());
+                head = head.GetNext();
+            }
+        }
+        public static Node<int> SmallestValueNode(Node<int> list)
+        {
+            if (list == null)
+                return null; 
+
+            Node<int> smallest = list; 
+            Node<int> pointer = list.GetNext();
+
+            while (pointer != null)
+            {
+                if (pointer.GetValue() < smallest.GetValue())
+                {
+                    smallest = pointer;
+                }
+                pointer = pointer.GetNext();
+            }
+
+            return smallest; 
+        }
+
+        public static Node<int> Sort(Node<int> head)
+        {
+            Node<int> sorted = null;
+            while (head != null)
+            {
+                Node<int> smallest = SmallestValueNode(head);
+
+                if (smallest == head)
+                {
+                    head = head.GetNext(); // Move head if the smallest is the first node
+                }
+                else
+                {
+                    Node<int> current = head;
+                    while (current.GetNext() != smallest)
+                    {
+                        current = current.GetNext();
+                    }
+                    current.SetNext(smallest.GetNext()); // Remove `smallest` from the list
+                }
+                //check if there is anything in the 'new' sorted list. if not, start it!:
+                if (sorted == null)
+                {
+                    sorted = smallest;
+                    smallest.SetNext(null);
+                }
+                else
+                {
+                    Node<int> temp = sorted;
+                    while (temp.GetNext() != null)
+                    {
+                        temp = temp.GetNext();
+                    }
+                    temp.SetNext(smallest);
+                    smallest.SetNext(null);
+                }
+            }
+            return sorted; 
+        }
+
+
+        static void Main(string[] args)
+        {
+            Node<int> node5 = new Node<int>(6, null);
+            Node<int> node4 = new Node<int>(2, node5);
+            Node<int> node3 = new Node<int>(7, node4);
+            Node<int> node2 = new Node<int>(0, node3);
+            Node<int> node1 = new Node<int>(1, node2);
+            printNode(Sort(node1));
+
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
