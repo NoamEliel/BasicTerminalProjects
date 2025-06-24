@@ -1,0 +1,32 @@
+    public static int Count(BinNode<int> tree)
+    {
+        int leftSum = 0, rightSum = 0;
+
+        if (tree.GetRight().GetLeft() != null || tree.GetRight().GetRight() != null)
+            rightSum = Count(tree.GetRight());
+
+        if (tree.GetLeft().GetLeft() != null || tree.GetLeft().GetRight() != null)
+            leftSum = Count(tree.GetLeft());
+
+        return leftSum + rightSum + 1;
+    }
+
+
+    public static void Main()
+    {
+
+
+
+        BinNode<int> t1, t2, t3, t4, t5;
+        t4 = new BinNode<int>(-2);
+        t5 = new BinNode<int>(5);
+        t2 = new BinNode<int>(t4, 0, t5);
+        t3 = new BinNode<int>(10);
+        t1 = new BinNode<int>(t2, 7, t3);
+
+        Console.WriteLine(Count(t1));
+       
+
+        Console.ReadLine();
+    }
+}
