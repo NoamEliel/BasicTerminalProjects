@@ -1,0 +1,213 @@
+// Student.cs
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    public class Student
+    {
+        private string name;
+        private int classnum;
+        private int sibling_count;
+
+        public Student(string name, int classnum, int sibling_count)
+        {
+            this.name = name;
+            this.classnum = classnum;   
+            this.sibling_count = sibling_count;
+        }
+        public string getName() { return name; }
+        public int getClassnum() { return classnum; }
+        public int getSiblingCount() { return sibling_count; }
+
+        public void setName(string name) { this.name = name; }
+        public void setClassnum(int num) { this.classnum = num; }
+        public void setSibling_Count(int num) { this.sibling_count = num; }
+    }
+}
+
+// Classroom.cs
+using System;
+
+namespace Exercise
+{
+    public class Classroom
+    {
+        private int classNum;
+        private int studentCount;
+        private int siblingCount;
+
+        public Classroom(int classNum, int studentCount, int siblingCount)
+        {
+            this.classNum = classNum;
+            this.studentCount = studentCount;
+            this.siblingCount = siblingCount;
+        }
+
+        public int GetClassNum() { return classNum; }
+        public int GetStudentCount() { return studentCount; }
+        public int GetSiblingCount() { return siblingCount; }
+
+        public void SetClassNum(int classNum) { this.classNum = classNum; }
+        public void SetStudentCount(int studentCount) { this.studentCount = studentCount; }
+        public void SetSiblingCount(int siblingCount) { this.siblingCount = siblingCount; }
+
+        public override string ToString()
+        {
+            return $"Classroom: {classNum}, Students: {studentCount}, Sibling Count: {siblingCount}";
+        }
+    }
+}
+
+// Program.cs
+using Exercise;
+using System;
+using static Program;
+
+public class Program
+{
+    public class BinNode<T>
+    {
+        private T value;
+        private BinNode<T> next;
+
+        public BinNode(T value, BinNode<T> next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(BinNode<T> next) { this.next = next; }
+        public void SetValue(T value) { this.value = value; }
+        public T GetValue() { return this.value; }
+        public BinNode<T> GetNext() { return this.next; }
+    }
+
+    public static void Print(BinNode<Classroom> list)
+    {
+        BinNode<Classroom> p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+
+    public static int FindListLength<T>(BinNode<T> head)
+    {
+        int length = 0;
+        while (head != null)
+        {
+            length++;
+            head = head.GetNext();
+        }
+        return length;
+    }
+
+    public static BinNode<Student> removeBelow2Siblings(BinNode<Student> head)
+    {
+        int length = FindListLength(head);
+        BinNode<Student> cur = head;
+        BinNode<Student> Ohead = head;
+        BinNode<Student> result = Ohead;
+        int c = 0;
+        for (int i = 0; i < length; i++)
+        {
+            if (cur.GetValue().getSiblingCount() < 2)
+            {
+                cur = cur.GetNext();
+            }
+            else
+            {
+                head.SetValue(cur.GetValue());
+                head = head.GetNext();
+                cur = cur.GetNext();
+                c++;
+            }
+        }
+        head.SetNext(null);
+        head.SetValue(null);
+        bool work = true;
+        while (work)
+        {
+            if (Ohead.GetNext().GetValue() != null)
+            {
+                Ohead = Ohead.GetNext();
+            }
+            else { work = false; Ohead.SetNext(null); }
+        }
+        return result;
+    }
+
+    public static BinNode<Classroom> sortClasses(BinNode<Student> head)
+    {
+        // create empty classrooms for classes 1 to 8
+        BinNode<Classroom> class8 = new BinNode<Classroom>(new Classroom(8, 0, 0), null);
+        BinNode<Classroom> class7 = new BinNode<Classroom>(new Classroom(7, 0, 0), class8);
+        BinNode<Classroom> class6 = new BinNode<Classroom>(new Classroom(6, 0, 0), class7);
+        BinNode<Classroom> class5 = new BinNode<Classroom>(new Classroom(5, 0, 0), class6);
+        BinNode<Classroom> class4 = new BinNode<Classroom>(new Classroom(4, 0, 0), class5);
+        BinNode<Classroom> class3 = new BinNode<Classroom>(new Classroom(3, 0, 0), class4);
+        BinNode<Classroom> class2 = new BinNode<Classroom>(new Classroom(2, 0, 0), class3);
+        BinNode<Classroom> class1 = new BinNode<Classroom>(new Classroom(1, 0, 0), class2);
+        BinNode<Classroom> class_start = class1;
+
+        int Slength = FindListLength(head);
+        int Clength = FindListLength(class_start);
+
+        BinNode<Student> Scur = head;
+        BinNode<Classroom> Ccur = class_start;
+
+        // count students per class
+        for (int i = 0; i < Slength; i++)
+        {
+            for (int j = 0; j < Clength; j++)
+            {
+                if (Scur.GetValue().getClassnum() == Ccur.GetValue().GetClassNum())
+                {
+                    Ccur.GetValue().SetStudentCount(Ccur.GetValue().GetStudentCount() + 1);
+                }
+                Ccur = Ccur.GetNext();
+            }
+            Ccur = class_start;
+            Scur = Scur.GetNext();
+        }
+
+        // count siblings per class
+        Ccur = class_start;
+        Scur = head;
+        for (int i = 0; i < Slength; i++)
+        {
+            for (int j = 0; j < Clength; j++)
+            {
+                if (Scur.GetValue().getClassnum() == Ccur.GetValue().GetClassNum())
+                {
+                    Ccur.GetValue().SetSiblingCount(Ccur.GetValue().GetSiblingCount() + Scur.GetValue().getSiblingCount());
+                }
+                Ccur = Ccur.GetNext();
+            }
+            Ccur = class_start;
+            Scur = Scur.GetNext();
+        }
+
+        return class_start;
+    }
+
+    public static void Main(string[] args)
+    {
+        BinNode<Student> student8 = new BinNode<Student>(new Student("Hannah", 8, 4), null);
+        BinNode<Student> student7 = new BinNode<Student>(new Student("Gabe", 7, 1), student8);
+        BinNode<Student> student6 = new BinNode<Student>(new Student("Frank", 6, 2), student7);
+        BinNode<Student> student5 = new BinNode<Student>(new Student("Emma", 5, 3), student6);
+        BinNode<Student> student4 = new BinNode<Student>(new Student("David", 4, 0), student5);
+        BinNode<Student> student3 = new BinNode<Student>(new Student("Chris", 3, 2), student4);
+        BinNode<Student> student2 = new BinNode<Student>(new Student("Brian", 5, 1), student3);
+        BinNode<Student> student1 = new BinNode<Student>(new Student("Anna", 4, 3), student2);
+
+        Print(sortClasses(student1));
+
+        Console.ReadKey();
+    }
+}
