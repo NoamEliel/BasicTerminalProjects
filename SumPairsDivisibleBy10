@@ -1,0 +1,176 @@
+using Exercise;
+using System;
+using System.Xml.Linq;
+using static Program;
+
+public class Program
+{
+    public class BinNode<T>
+    {
+        private T value;
+        private BinNode<T> next;
+
+        public BinNode(T value, BinNode<T> next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(BinNode<T> next) { this.next = next; }
+        public void SetValue(T value) { this.value = value; }
+        public T GetValue() { return this.value; }
+        public BinNode<T> GetNext() { return this.next; }
+    }
+
+    public static void Print(BinNode<double> list)
+    {
+        BinNode<double> p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+
+    public static int FindListLength<T>(BinNode<T> head)
+    {
+        int length = 0;
+        while (head != null)
+        {
+            length++;
+            head = head.GetNext();
+        }
+        return length;
+    }
+    public static BinNode<double> mergeDividableBy10(BinNode<double> head)
+    {
+        int length = FindListLength(head);
+        BinNode<double> Ohead = head;
+        BinNode<double> cur = head;
+        BinNode<double> copy = new BinNode<double>(head.GetValue(), null);
+        BinNode<double> copy_start = copy;
+        BinNode<double> exclude = new BinNode<double>(head.GetValue(), null);
+        BinNode<double> exclude_start = exclude;
+
+
+        while (head != null) {
+            copy.SetNext(new BinNode<double>(head.GetValue(), null));
+            copy = copy.GetNext();
+            head = head.GetNext();
+        }
+        
+        copy_start = copy_start.GetNext();
+        copy = copy_start;
+        head = Ohead;
+
+        bool exclude_first = false;
+        for (int i = 0; i < length; i++)
+        {
+            for (int j = 0; j < length; j++)
+            {
+                if ((head.GetValue() + cur.GetValue()) % 10 == 0 && head.GetValue() % 10 != 0)
+                {
+                    head.SetValue(head.GetValue() + cur.GetValue());
+                    for (int k = 0; k < length; k++)
+                    {
+                        if (copy.GetValue() == cur.GetValue())
+                        {
+                            if (exclude_first == false)
+                            {
+                                exclude.SetValue(cur.GetValue());
+                                exclude_first = true;
+                            }
+                            else
+                            {
+                                exclude.SetNext(new BinNode<double>(cur.GetValue(), null));
+                                exclude = exclude.GetNext();
+                            }
+
+                        }
+                        copy = copy.GetNext();
+                    }
+                    copy = copy_start;
+                }
+                cur = cur.GetNext();
+            }
+            head = head.GetNext();
+            cur = Ohead;
+        }
+
+
+        head = Ohead;
+        cur = head;
+        BinNode<double> prev = null;
+        BinNode<double> excludeCur;
+
+        while (cur != null)
+        {
+            excludeCur = exclude_start;
+            bool shouldExclude = false;
+
+            
+            while (excludeCur != null)
+            {
+                if (cur.GetValue() == excludeCur.GetValue())
+                {
+                    shouldExclude = true;
+                    break;
+                }
+                excludeCur = excludeCur.GetNext();
+            }
+
+            
+            if (shouldExclude)
+            {
+                if (prev == null)
+                {
+                    
+                    head = cur.GetNext();
+                }
+                else
+                {
+                    
+                    prev.SetNext(cur.GetNext());
+                }
+
+                BinNode<double> temp = cur;
+                cur = cur.GetNext();
+                temp = null;
+            }
+            else
+            {
+                prev = cur;
+                cur = cur.GetNext();
+            }
+        }
+
+        Ohead = head;
+
+
+
+
+
+
+        return Ohead;
+    }
+
+   
+    
+    public static void Main(string[] args)
+    {
+
+        BinNode<double> node7 = new BinNode<double>(1, null);
+        BinNode<double> node6 = new BinNode<double>(2, node7);
+        BinNode<double> node5 = new BinNode<double>(17, node6);
+        BinNode<double> node4 = new BinNode<double>(6, node5);
+        BinNode<double> node3 = new BinNode<double>(14, node4);
+        BinNode<double> node2 = new BinNode<double>(18, node3);
+        BinNode<double> node1 = new BinNode<double>(13, node2);
+        Print(mergeDividableBy10(node1));
+        
+
+
+
+        Console.ReadKey();
+    }
+}
+
