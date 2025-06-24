@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    class Node
+    {
+        private int value;
+        private Node next;
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public int getValue() { return this.value; }
+        public Node getNext() { return this.next; }
+        public void setNext(Node next) { this.next = next; }
+        public void setValue(int value) { this.value = value; }
+    }
+   
+    internal class Program
+    {
+        public static int returnLengthOfNode(Node list)
+        {
+            int counter = 0;
+            Node pointer = list;
+            while (pointer != null)
+            {
+                counter++;
+                pointer = pointer.getNext();
+            }
+            return counter;
+        }
+        public static void printNodes(Node list)
+        {
+            Node pointer = list;
+            while (pointer != null)
+            {
+                Console.Write(pointer.getValue() + ", ");
+                pointer = pointer.getNext();
+            }
+        }
+
+
+
+
+        public static Node returnSumInNode(int num)
+        {
+
+            Node resultHead = null;
+            while (num > 0)
+            {
+                Node newNode = new Node(num % 10, resultHead);
+                resultHead = newNode;
+                num /= 10;
+            }
+
+            return resultHead;
+        }
+
+        static void Main(string[] args)
+        {
+          
+            printNodes(returnSumInNode(12345));
+            Console.ReadLine();
+        }
+    }
+}
+
