@@ -1,0 +1,93 @@
+
+using System;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public class Node
+    {
+        private int value;
+        private Node next;
+
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(Node next) { this.next = next; }
+        public void SetValue(int value) { this.value = value; }
+        public int GetValue() { return this.value; }
+        public Node GetNext() { return this.next; }
+    }
+
+
+    public static void Print(Node list)
+    {
+        Node p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+    public static int findListLength(Node head)
+    {
+        int length = 0;
+        while (head != null)
+        {
+            length++;
+            head = head.GetNext();
+        }
+        return length;
+    }
+
+    public static Node findAndRemove(Node head, int num)
+    {
+        if (head == null)
+        {
+            return null;
+        }
+        if (head.GetValue() == num)
+        {
+            head = head.GetNext();
+        }
+        Node Ohead = head;
+        Node cur = head;
+        int l = findListLength(head);
+        for (int i = 0; i < l; i++)
+        {
+            if (cur.GetNext() != null)
+            {
+                if (cur.GetNext().GetValue() != num)
+                {
+                    cur = cur.GetNext();
+                }
+                else
+                {
+                    cur.SetNext(cur.GetNext().GetNext());
+                }
+            }
+            
+        }
+        
+
+
+        return Ohead;
+    }
+
+
+
+    public static void Main(string[] args)
+    {
+
+        int num = 1;
+        Node node4 = new Node(4, null);
+        Node node3 = new Node(3, node4);
+        Node node2 = new Node(2, node3);
+        Node node1 = new Node(1, node2);
+        
+        Print(findAndRemove(node1, num));
+
+        Console.ReadKey();
+    }
+}
