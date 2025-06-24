@@ -1,0 +1,137 @@
+using System;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public class Node
+    {
+        private int value;
+        private Node next;
+
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(Node next) { this.next = next; }
+        public void SetValue(int value) { this.value = value; }
+        public int GetValue() { return this.value; }
+        public Node GetNext() { return this.next; }
+    }
+
+
+    public static void Print(Node list)
+    {
+        Node p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+
+    public static bool isInList(Node list, int num)
+    {
+        bool i = false;
+        list = list.GetNext();
+        while (list != null)
+        {
+            if (num == list.GetValue())
+            {
+                i = true;
+            }
+            list = list.GetNext();
+        }
+        return i;
+    }
+    public static bool isInListNoNext(Node list, int num)
+    {
+        bool i = false;
+        while (list != null)
+        {
+            if (num == list.GetValue())
+            {
+                i = true;
+            }
+            list = list.GetNext();
+        }
+        return i;
+    }
+
+    public static Node NumbersByOrder(Node head)
+    {
+        if (head == null)
+            return null;
+
+        Node result = new Node(head.GetValue(), null);
+        Node finalResult = result; 
+        Node cur0 = head; 
+
+        while (cur0 != null)
+        {
+            if (isInList(head, cur0.GetValue()) && !isInListNoNext(finalResult, cur0.GetValue()))
+            {
+                result.SetNext(new Node(cur0.GetValue(), null));
+                result = result.GetNext(); 
+            }
+
+            cur0 = cur0.GetNext(); 
+        }
+
+        return finalResult; 
+    }
+    public static int countTimes(Node header, int num)
+    {
+        Node head = header;
+        int times = 0;
+        while (head != null)
+        {
+            if (head.GetValue() == num)
+            {
+                times++;
+            }
+            head = head.GetNext();
+        }
+        return times;
+    }
+    public static Node NodeAdder(Node head)
+    {
+        Node header = NumbersByOrder(head);
+        Node cur = header;
+
+        Node dummy = new Node(0, null);
+        Node result = dummy;
+
+        while (cur != null)
+        {
+            int count = countTimes(head, cur.GetValue());
+            int newValue = int.Parse(new string(cur.GetValue().ToString()[0], count));
+
+            result.SetNext(new Node(newValue, null));
+            result = result.GetNext();
+
+            cur = cur.GetNext();
+        }
+
+        return dummy.GetNext();
+    }
+
+    public static void Main(string[] args)
+    {
+
+        Node node10 = new Node(8, null);
+        Node node9 = new Node(7, node10);
+        Node node8 = new Node(4, node9);
+        Node node7 = new Node(3, node8);
+        Node node6 = new Node(3, node7);
+        Node node5 = new Node(4, node6);
+        Node node4 = new Node(4, node5);
+        Node node3 = new Node(4, node4);
+        Node node2 = new Node(3, node3);
+        Node node1 = new Node(5, node2);
+        Print(NodeAdder(node1));
+
+        Console.ReadKey();
+    }
+}
+
