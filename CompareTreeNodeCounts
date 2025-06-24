@@ -1,0 +1,81 @@
+using System;
+public class BinNode<T>
+{
+    public T Value { get; set; }
+    public BinNode<T> Left { get; set; }
+    public BinNode<T> Right { get; set; }
+
+    public BinNode(T value)
+    {
+        Value = value;
+        Left = null;
+        Right = null;
+    }
+}
+    
+public class Program
+{
+    public static int Count(BinNode<int> tree)
+    {
+        int leftSum = 0, rightSum = 0;
+
+        if (tree.Right.Left != null || tree.Right.Right != null)
+            rightSum = Count(tree.Right);
+
+        if (tree.Left.Left != null || tree.Left.Right != null)
+            leftSum = Count(tree.Left);
+
+        return leftSum + rightSum + 1;
+    }
+    public static char countTreeVarsChar(BinNode<int> root1, BinNode<int> root2)
+    {
+        int num1 = Count(root1);
+        int num2 = Count(root2);
+        if (num1 == num2)
+        {
+            return 'c';
+        }
+        else
+        {
+            if (num1 > num2) { return 'a'; }
+            else { return 'b'; }
+        }
+    }
+ 
+    public static void Main(string[] args)
+    {
+        var root1 = new BinNode<int>(10)
+        {
+            Left = new BinNode<int>(5)
+            {
+                Left = new BinNode<int>(2),
+                Right = new BinNode<int>(5)
+            },
+            Right = new BinNode<int>(15)
+            {
+                Left = new BinNode<int>(11),
+                Right = new BinNode<int>(20)
+            }
+        };
+        var root2 = new BinNode<int>(10)
+        {
+            Left = new BinNode<int>(5)
+            {
+                Left = new BinNode<int>(2),
+                Right = new BinNode<int>(5)
+            },
+            Right = new BinNode<int>(15)
+            {
+                //Left = new BinNode<int>(11),
+                //Right = new BinNode<int>(20)
+            }
+        };
+        Console.WriteLine(countTreeVarsChar(root1 , root2));
+
+
+        Console.ReadKey();
+    }
+}
+
+
+
