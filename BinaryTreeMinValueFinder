@@ -1,0 +1,21 @@
+  public static int FindMin(BinNode<int> tree)
+  {
+      if (tree == null)
+          return int.MaxValue;
+
+      int minValue = tree.GetValue();
+
+      if (tree.GetRight() != null)
+      {
+          int rightMin = FindMin(tree.GetRight());
+          minValue = Math.Min(minValue, rightMin);
+      }
+      if (tree.GetLeft() != null)
+      {
+          int leftMin = FindMin(tree.GetLeft());
+          minValue = Math.Min(minValue, leftMin);
+      }
+      
+
+      return minValue;
+  }
