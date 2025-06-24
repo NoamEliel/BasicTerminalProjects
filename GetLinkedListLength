@@ -1,0 +1,45 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    class Node
+    {
+        private int value;
+        private Node next;
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public int getValue() { return this.value; }
+        public Node getNext() { return this.next; }
+
+    }
+    internal class Program
+    {
+        public static int returnLengthOfNode(Node list)
+        {
+            int counter = 0;
+            Node pointer = list;
+            while (pointer != null)
+            {
+                counter++;
+                pointer = pointer.getNext();
+            }
+            return counter;
+        }
+        static void Main(string[] args)
+        {
+            Node n3 = new Node(123, null);
+            Node n2 = new Node(345, n3);
+            Node n1 = new Node(271, n2);
+            Console.WriteLine(returnLengthOfNode(n1));
+
+            Console.ReadLine();
+        }
+    }
+}
