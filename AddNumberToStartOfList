@@ -1,0 +1,104 @@
+using System;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public class Node
+    {
+        private int value;
+        private Node next;
+
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(Node next) { this.next = next; }
+        public void SetValue(int value) { this.value = value; }
+        public int GetValue() { return this.value; }
+        public Node GetNext() { return this.next; }
+    }
+
+
+    public static void Print(Node list)
+    {
+        Node p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+    public static int findListLength(Node head)
+    {
+        int length = 0;
+        while (head != null)
+        {
+            length++;
+            head = head.GetNext();
+        }
+        return length;
+    }
+
+    public static Node addToStart(Node head, int num)
+    {
+        //add 0 to the end of the Node list
+        int l = findListLength(head);
+        Node cur = head;
+        for (int i = 0; i < l; i++)
+        {
+            if (cur.GetNext() == null)
+            {
+                cur.SetNext(new Node(0, null));
+            }
+            else
+            {
+                cur = cur.GetNext();
+            }
+        }
+        int c = l;
+        cur = head;
+        for (int i = 0; i < l; i++)
+        {
+            cur = head;
+            for (int j = 0; j < c; j++)
+            {
+                cur = cur.GetNext();
+                if ((c - 1) == j+1)
+                {
+                    if (cur.GetNext().GetNext() != null)
+                    {
+                        cur.SetNext(new Node(cur.GetValue(), cur.GetNext().GetNext()));
+                    }
+                    else
+                    {
+                        cur.SetNext(new Node(cur.GetValue(), null));
+                    }
+                    c--;
+                }
+            }
+        }
+
+        head.SetValue(num);
+        return head;
+
+    }
+
+
+
+    public static void Main(string[] args)
+    {
+
+        int num = 9;
+        Node node4 = new Node(3, null);
+        Node node3 = new Node(2, node4);
+        Node node2 = new Node(1, node3);
+        Node node1 = new Node(1, node2);
+        
+        Print(addToStart(node1, num));
+
+        Console.ReadKey();
+    }
+}
+
+
