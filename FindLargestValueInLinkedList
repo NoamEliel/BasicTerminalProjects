@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    class Node
+    {
+        private int value;
+        private Node next;
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public int getValue() { return this.value; }
+        public Node getNext() { return this.next; }
+    }
+    internal class Program
+    {
+        public static int returnLargestVariableFromList(Node list)
+        {
+            int largest = list.getValue();
+            Node pointer = list;
+            while( pointer != null )
+            {
+                if (largest < pointer.getValue())
+                {
+                    largest = pointer.getValue();
+                }
+                pointer = pointer.getNext();
+            }
+            return largest; 
+        }
+        static void Main(string[] args)
+        {
+            var watch = Stopwatch.StartNew();  //start the watch
+
+            Node n3 = new Node(24, null);
+            Node n2 = new Node(467, n3);
+            Node n1 = new Node(354, n2);
+            Console.WriteLine("-----------");
+            Console.WriteLine(returnLargestVariableFromList(n1));
+            Console.WriteLine("-----------");
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
