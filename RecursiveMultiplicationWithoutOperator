@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class Program
+    {
+        public static int returnMultiply(int one, int two)
+        {
+            if (two == 1)
+                return one;
+
+            return one + returnMultiply(one, two - 1);
+        }
+
+        static void Main(string[] args)
+        {
+            
+            Console.WriteLine(returnMultiply(5 , 5));
+            //output = 25
+            Console.ReadKey();
+        }
+    }
+}
+
+
