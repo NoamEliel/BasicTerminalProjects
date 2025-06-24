@@ -1,0 +1,54 @@
+  public static int findMax(Node tree)
+  {
+      if (tree == null) return int.MinValue; 
+
+      int largest = tree.getValue();
+
+      int leftMax = findMax(tree.getLeft());
+      int rightMax = findMax(tree.getRight());
+
+      return Math.Max(largest, Math.Max(leftMax, rightMax));
+  }
+
+
+  public static int MaxLessThan(Node tree, int max)
+  {
+      int left = int.MinValue, right = int.MinValue, root = int.MinValue;
+      if (tree.getLeft() != null)
+      {
+          left = MaxLessThan(tree.getLeft(), max);
+      }
+      if (tree.getRight() != null)
+      {
+          right = MaxLessThan(tree.getRight(), max);
+      }
+      if (tree.getValue() < max)
+      {
+          root = tree.getValue();
+      }
+      return Math.Max(left, Math.Max(right, root));
+  }
+
+  public static int secondMax(Node tree)
+  {
+      return MaxLessThan(tree, findMax(tree));
+  }
+
+
+
+
+
+
+
+
+
+  static void Main(string[] args)
+  {
+      Node three = new Node(3, null, null);
+      Node seven = new Node(7, null, null);
+      Node six = new Node(5, seven, three);
+      Node two = new Node(2, null, null);
+      Node one = new Node(1, six, two);
+      Console.WriteLine(secondMax(one));
+      Console.ReadKey();
+  }
