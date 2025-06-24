@@ -1,0 +1,22 @@
+public static int Height(BinNode<int> tree)
+ {
+     int leftHeight = 0, rightHeight = 0;
+
+     if (tree.GetRight() != null)
+         leftHeight = Height(tree.GetRight());
+
+     if (tree.GetLeft() != null)
+         rightHeight = Height(tree.GetLeft());
+
+     return Math.Max(leftHeight, rightHeight) + 1;
+ }
+
+
+
+// no null check:
+public static int Height(BinNode<int> tree)
+   {
+       if (tree == null)
+           return 0;
+       return Math.Max(Height(tree.GetLeft()), Height(tree.GetRight()) + 1;
+   }
