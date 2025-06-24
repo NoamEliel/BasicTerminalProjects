@@ -1,0 +1,107 @@
+using System;
+
+public class BinNode<T>
+{
+    private BinNode<T> left;
+    private T value;
+    private BinNode<T> right;
+
+    public BinNode(T value)
+    {
+        this.left = null;
+        this.value = value;
+        this.right = null;
+    }
+    public BinNode(BinNode<T> left, T value, BinNode<T> right)
+    {
+        this.left = left;
+        this.value = value;
+        this.right = right;
+    }
+    public T GetValue()
+    { return this.value; }
+    public BinNode<T> GetLeft()
+    { return this.left; }
+    public BinNode<T> GetRight()
+    { return this.right; }
+    public void Setvalue(T value)
+    {
+        this.value = value;
+    }
+    public void SetLeft(BinNode<T> left)
+    {
+        this.left = left;
+    }
+    public void SetRight(BinNode<T> right)
+    {
+        this.right = right;
+    }
+    public bool HasLeft()
+    {
+        return this.left != null;
+    }
+    public bool HasRight()
+    {
+        return this.right != null;
+    }
+    public override string ToString()
+    {
+        return this.value.ToString();
+    }
+}
+
+public class Program
+{
+    public static double CalculateLeafAverage(BinNode<int> root)
+    {
+        if (root == null) return 0;
+
+        int leafSum = 0;
+        int leafCount = 0;
+
+        CalculateLeafSumAndCount(root, ref leafSum, ref leafCount);
+
+        if (leafCount == 0) return 0;
+
+        return (double)leafSum / leafCount;
+    }
+
+    public static void CalculateLeafSumAndCount(BinNode<int> node, ref int leafSum, ref int leafCount)
+    {
+        if (node == null)
+            return;
+
+        if (!node.HasLeft() && !node.HasRight())
+        {
+            leafSum += node.GetValue();
+            leafCount++;
+        }
+
+        CalculateLeafSumAndCount(node.GetLeft(), ref leafSum, ref leafCount);
+        CalculateLeafSumAndCount(node.GetRight(), ref leafSum, ref leafCount);
+    }
+
+    static void Main(string[] args)
+    {
+      
+        BinNode<int> node6 = new BinNode<int>(6);
+        BinNode<int> node3 = new BinNode<int>(3);
+        BinNode<int> node8 = new BinNode<int>(8);
+        BinNode<int> node4 = new BinNode<int>(4);
+        BinNode<int> node2 = new BinNode<int>(2);
+        BinNode<int> node10 = new BinNode<int>(10);
+
+        node4.SetLeft(node3);
+        node4.SetRight(node8);
+        node3.SetLeft(node2);
+        node8.SetRight(node10);
+        node8.SetLeft(node6);
+
+        double average = CalculateLeafAverage(node4);
+        Console.WriteLine($"The average of leaf values is: {average}");
+
+        Console.ReadKey();
+    }
+}
+
+
