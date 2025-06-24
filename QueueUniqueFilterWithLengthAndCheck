@@ -1,0 +1,234 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    internal class Program
+    {
+        public class Queue<T>
+        {
+            private Node<T> head;
+            private Node<T> tail;
+
+            public Queue()
+            {
+                head = null;
+                tail = null;
+            }
+
+            public void Insert(T x)
+            {
+                Node<T> temp = new Node<T>(x);
+                if (IsEmpty())
+                {
+                    head = temp;
+                    tail = temp;
+                }
+                else
+                {
+                    tail.SetNext(temp);
+                    tail = temp;
+                }
+            }
+
+            public T Remove()
+            {
+                if (IsEmpty())
+                {
+                    throw new Exception("תור ריק");
+                }
+                T x = head.GetValue();
+                head = head.GetNext();
+                if (head == null)
+                {
+                    tail = null;
+                }
+                return x;
+            }
+
+            public T Head()
+            {
+                if (IsEmpty())
+                {
+                    throw new Exception("תור ריק");
+                }
+                return head.GetValue();
+            }
+
+            public bool IsEmpty()
+            {
+                return head == null;
+            }
+
+        }
+
+
+
+        public class Node<T>
+        {
+            private T info;
+            private Node<T> next;
+
+            public Node(T x)
+            {
+                info = x;
+                next = null;
+            }
+
+            public T GetValue()
+            {
+                return info;
+            }
+
+            public Node<T> GetNext()
+            {
+                return next;
+            }
+
+            public void SetNext(Node<T> next)
+            {
+                this.next = next;
+            }
+        }
+        public static void printQueue(Queue<int> queue)
+        {
+            Queue<int> q = new Queue<int>();
+            while (queue.IsEmpty() != true)
+            {
+                Console.WriteLine(queue.Head());
+                q.Insert(queue.Remove());
+            }
+            while (q.IsEmpty() != true)
+            {
+                queue.Insert(q.Remove());
+            }
+        }
+
+        public static int findQueueLength(Queue<int> queue)
+        {
+            int length = 0;
+            Queue<int> q = new Queue<int> ();
+            while (queue.IsEmpty() != true)
+            {
+                q.Insert(queue.Remove());
+                length++;
+            }
+            while (q.IsEmpty() != true)
+            {
+                queue.Insert(q.Remove());
+            }
+            return length;
+        }
+        public static bool inQueuetwice(Queue<int> queue, int num)
+        {
+            int found = 0;
+            Queue<int> q = new Queue<int>();
+            while(queue.IsEmpty() != true)
+            { 
+                if (queue.Head() == num)
+                {
+                    found++;
+                }
+                q.Insert(queue.Remove());
+            }
+            while (q.IsEmpty() != true)
+            {
+                queue.Insert(q.Remove());
+            }
+            if (found >= 2)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static Queue<int> appearONCE(Queue<int> queue)
+        {
+            int l = findQueueLength(queue);
+            Queue<int> q = new Queue<int>();
+            Queue<int> remove = new Queue<int>();
+            bool skipped = false;
+            while (queue.IsEmpty() == false)
+            {
+                Queue<int> tempRemove = new Queue<int>();
+                for (int i = 0; i < findQueueLength(remove); i++)
+                {
+                    Queue<int> tempQueue = new Queue<int>();
+                    while(queue.IsEmpty() != true) 
+                    {
+                        if (queue.Head() == remove.Head())
+                        {
+                            //skip it if it was already in there previously.
+                            queue.Remove();
+                            skipped = true;
+                        }
+                        else { tempQueue.Insert(queue.Remove()); }
+                    }
+                    while (tempQueue.IsEmpty() != true)
+                    {
+                        queue.Insert(tempQueue.Remove());
+                    }
+
+                }
+                while (tempRemove.IsEmpty() != true)
+                {
+                    remove.Insert(tempRemove.Remove());
+                }
+                
+
+
+
+                if (skipped == false)
+                {
+                    if (inQueuetwice(queue, queue.Head()))
+                    {
+                        q.Insert(queue.Head());
+                        remove.Insert(queue.Remove());
+                    }
+                    else { q.Insert(queue.Remove()); }
+                    
+                    
+                }
+                else
+                {
+                    skipped = false;
+                }
+                
+
+            }
+            while (q.IsEmpty() != true)
+            {
+                queue.Insert(q.Remove());
+            }
+            return queue;
+        }
+        static void Main(string[] args)
+        {
+            Queue<int> queue = new Queue<int>();
+            for (int i = 0; i < 7; i++)
+            {
+                queue.Insert(i);
+            }
+            queue.Insert(2);
+            Console.WriteLine(findQueueLength(queue));
+            Console.WriteLine(inQueuetwice(queue, 5));
+            Console.WriteLine("---");
+            printQueue(appearONCE(queue));
+
+            Console.ReadKey();
+            
+        }
+
+    }
+    
+
+
+
+
+}
+
+
