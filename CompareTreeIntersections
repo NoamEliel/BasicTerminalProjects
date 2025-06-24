@@ -1,0 +1,48 @@
+ public static int countIntersections(Node tree)
+    {
+        if (tree == null) return 0;
+
+        int count = 0;
+
+        void traverse(Node node)
+        {
+            if (node == null) return;
+
+            if (node.getLeft() != null && node.getRight() != null)
+            {
+                count++;
+            }
+
+            traverse(node.getLeft());
+            traverse(node.getRight());
+        }
+
+        traverse(tree);
+        return count;
+    }
+    public static int intersectionNum(Node t1, Node t2)
+    {
+        if (countIntersections(t1) > countIntersections(t2)) { return 1; }
+        if (countIntersections(t1) < countIntersections(t2)) { return 2; }
+        else { return 0; }
+    } 
+
+    static void Main(string[] args)
+    {
+        Node three = new Node(3, null, null);
+        Node seven = new Node(7, null, null);
+        Node six = new Node(5, seven, three);
+        Node two = new Node(2, null, null);
+        Node one = new Node(1, six, two);
+
+        Node nine = new Node(9, null, null);
+        Node five = new Node(5, null, null);
+        Node eight = new Node(8, nine, five);
+        Node four = new Node(4, null, null);
+        Node ten = new Node(10, eight, four);
+
+        Console.WriteLine(intersectionNum(ten, one));
+
+        Console.ReadKey();
+    }
+}
