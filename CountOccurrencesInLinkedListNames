@@ -1,0 +1,115 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    public class Node<T>
+    {
+        private T value;
+        private Node<T> next;
+        /* הפעולה בונה ומחזירה חוליה שהערך שלה הוא value ואין לה חוליה עוקבת **/
+        public Node(T value)
+        {
+            this.value = value;
+            this.next = null;
+        }
+        /*הפעולה בונה ומחזירה חוליה, שהערך שלה הוא value
+          והחוליה העוקבת לה היא החוליה next */
+        public Node(T value, Node<T> next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        /* הפעולה מחזירה את הערך של החוליה הנוכחית **/
+        public T GetValue()
+        {
+            return value;
+        }
+        /* הפעולה מחזירה את החוליה העוקבת לחוליה הנוכחית **/
+        public Node<T> GetNext()
+        {
+            return next;
+        }
+        /* הפעולה קובעת את ערך החוליה הנוכחית להיות  value **/
+        public void SetValue(T value)
+        {
+            this.value = value;
+        }
+        /* הפעולה קובעת את החוליה העוקבת לחוליה הנוכחית להיות החוליה next **/
+        public void SetNext(Node<T> next)
+        {
+            this.next = next;
+        }
+        /* הפעולה מחזירה מחרוזת המתארת את החוליה הנוכחית */
+
+
+       
+    }
+
+
+    
+
+
+    internal class Program
+    {
+        public static LinkedList<string> AddOccurrencesToNames(LinkedList<string> names)
+        {
+            LinkedList<string> result = new LinkedList<string>();
+            LinkedListNode<string> current = names.First;
+
+            while (current != null)
+            {
+                string name = current.Value;
+                int count = 0;
+                LinkedListNode<string> temp = names.First;
+                bool isLastOccurrence = true;
+
+                while (temp != null)
+                {
+                    if (temp.Value == name)
+                    {
+                        count++;
+                        if (temp != current && temp.Next != null)
+                        {
+                            isLastOccurrence = false;
+                        }
+                    }
+                    temp = temp.Next;
+                }
+
+                if (isLastOccurrence)
+                {
+                    result.AddLast($"{name}:{count}");
+                }
+
+                current = current.Next;
+            }
+
+            return result;
+        }
+
+        public static void Main(string[] args)
+        {
+            LinkedList<string> names = new LinkedList<string>();
+            names.AddLast("Tal");
+            names.AddLast("Shai");
+            names.AddLast("David");
+            names.AddLast("Tal");
+            names.AddLast("Avi");
+            names.AddLast("David");
+
+            LinkedList<string> updatedNames = AddOccurrencesToNames(names);
+
+            foreach (string name in updatedNames)
+            {
+                Console.WriteLine(name);
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
+
