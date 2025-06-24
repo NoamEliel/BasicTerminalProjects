@@ -1,0 +1,122 @@
+using System;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public class BinNode<T>
+    {
+        private int value;
+        private BinNode<int> next;
+
+        public BinNode(int value, BinNode<int> next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(BinNode<int> next) { this.next = next; }
+        public void SetValue(int value) { this.value = value; }
+        public int GetValue() { return this.value; }
+        public BinNode<int> GetNext() { return this.next; }
+    }
+
+
+    public static void Print(BinNode<int> list)
+    {
+        BinNode<int> p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+    public static int findListLength(BinNode<int> head)
+    {
+        int length = 0;
+        while (head != null)
+        {
+            length++;
+            head = head.GetNext();
+        }
+        return length;
+    }
+
+    public static BinNode<int> seperateLists(BinNode<int> lis1, BinNode<int> lis2)
+    {
+        int length1 = findListLength(lis1);
+        int length2 = findListLength(lis2);
+        BinNode<int> cur1 = lis1;
+        BinNode<int> cur2 = lis2;
+        int times = length2;
+        bool finished = false;
+        int start = 0;
+
+        //find at what index (starting from zero) does lis2 start
+        for (int i = 0; i < length1; i++)
+        {
+            if (cur2 != null)
+            {
+                if (cur1.GetValue() == cur2.GetValue())
+                {
+                    cur2 = cur2.GetNext();
+                    times--;
+                }
+                else if (times < length2 && times != 0)
+                {
+                    cur2 = lis2;
+                    times = length2;                            
+                }
+                if (times == 0)
+                {
+                    finished = true;
+                }
+                cur1 = cur1.GetNext();
+            }
+            if (finished == true)
+            {
+                start = (i-length2);
+                finished = false;
+            }
+        }
+        //reset variables, and use the start variable to skip over, re-froming lis1.
+        cur1 = lis1;
+        cur2 = lis2;
+        for (int i = 0; i < start; i++)
+        {
+            cur1 = cur1.GetNext();
+        }
+        BinNode<int> scan = cur1;
+        for (int i = 0; i < length2+1; i++)
+        {
+            scan = scan.GetNext();
+        }
+        cur1.SetNext(scan);
+
+        return lis1;
+    }
+
+
+
+    public static void Main(string[] args)
+    {
+        //lis2
+        BinNode<int> nodeC = new BinNode<int>(6, null);
+        BinNode<int> nodeB = new BinNode<int>(5, nodeC);
+        BinNode<int> nodeA = new BinNode<int>(4, nodeB);
+        //lis1
+        BinNode<int> node8 = new BinNode<int>(8, null);
+        BinNode<int> node7 = new BinNode<int>(7, node8);
+        BinNode<int> node6 = new BinNode<int>(6, node7);
+        BinNode<int> node5 = new BinNode<int>(5, node6);
+        BinNode<int> node4 = new BinNode<int>(4, node5);
+        BinNode<int> node3 = new BinNode<int>(3, node4);
+        BinNode<int> node2 = new BinNode<int>(5, node3);
+        BinNode<int> node1 = new BinNode<int>(4, node2);
+
+        Print(seperateLists(node1, nodeA));
+
+        Console.ReadKey();
+    }
+}
+
+
