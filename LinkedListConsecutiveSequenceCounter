@@ -1,0 +1,194 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    class Node
+    {
+        private int value;
+        private Node next;
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public int getValue() { return this.value; }
+        public Node getNext() { return this.next; }
+        public void setNext(Node next) { this.next = next; }
+    }
+   
+    internal class Program
+    {
+      
+        public static int returnLengthOfNode(Node list)
+        {
+            int counter = 0;
+            Node pointer = list;
+            while (pointer != null)
+            {
+                counter++;
+                pointer = pointer.getNext();
+            }
+            return counter;
+        }
+        public static int[] returnNodeAsArray(Node list)
+        {
+            int[] arr = new int[returnLengthOfNode(list)];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = list.getValue();
+                list = list.getNext();
+            }
+            return arr;
+        }
+
+        public static void printSequenceNumber(Node list, int num)
+        {
+            //find Length of list
+            int length = returnLengthOfNode(list);
+            int[] arr = returnNodeAsArray(list);
+            int counter = 0;
+            bool sequence = false;
+            for (int i = 0; i < length; i++)
+            {
+                if (arr[i] == num)
+                {
+                    if (!sequence)
+                    {
+                        counter++;
+                        sequence = true;
+                    }
+                }
+                else
+                { sequence = false;  }
+
+            }
+            Console.WriteLine(counter);
+        }
+        static void Main(string[] args)
+        {
+            Node n5 = new Node(1, null);
+            Node n4 = new Node(0, n5);
+            Node n3 = new Node(1, n4);
+            Node n2 = new Node(2, n3);
+            Node n1 = new Node(1, n2);
+
+            printSequenceNumber(n1, 1);
+            
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+במקום להעביר את הרשימה המקושרת למערך, אפשר לעשות את אותה הפעולה עם רשימה מקושרת בלבד:
+
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    class Node
+    {
+        private int value;
+        private Node next;
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public int getValue() { return this.value; }
+        public Node getNext() { return this.next; }
+        public void setNext(Node next) { this.next = next; }
+    }
+   
+    internal class Program
+    {
+      
+        public static int returnLengthOfNode(Node list)
+        {
+            int counter = 0;
+            Node pointer = list;
+            while (pointer != null)
+            {
+                counter++;
+                pointer = pointer.getNext();
+            }
+            return counter;
+        }
+        public static int[] returnNodeAsArray(Node list)
+        {
+            int[] arr = new int[returnLengthOfNode(list)];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = list.getValue();
+                list = list.getNext();
+            }
+            return arr;
+        }
+        
+
+        public static void printSequenceNumber(Node list, int num)
+        {
+            //find Length of list
+            int length = returnLengthOfNode(list);
+            int counter = 0;
+            bool sequence = false;
+            for (int i = 0; i < length-1; i++)
+            {
+               
+                if (list.getNext().getValue() == num)
+                {
+                    if (!sequence)
+                    {
+
+
+                        counter++;
+                        sequence = true;
+
+
+                    }
+                }
+                else
+                { sequence = false; }
+                list = list.getNext();
+                if (list.getNext() == null)
+                {
+                    if (list.getValue() == num)
+                    {
+                        counter++;
+                    }
+                }
+            }
+
+            
+            Console.WriteLine(counter);
+        }
+        static void Main(string[] args)
+        {
+            Node n5 = new Node(1, null);
+            Node n4 = new Node(0, n5);
+            Node n3 = new Node(1, n4);
+            Node n2 = new Node(2, n3);
+            Node n1 = new Node(1, n2);
+
+            printSequenceNumber(n1, 1);
+            
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+
