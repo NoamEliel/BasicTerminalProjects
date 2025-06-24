@@ -1,0 +1,46 @@
+    public static int findQueueLength(Queue<int> queue)
+    {
+        int length = 0;
+        Queue<int> q = new Queue<int> ();
+        while (queue.IsEmpty() != true)
+        {
+            q.Insert(queue.Remove());
+            length++;
+        }
+        while (q.IsEmpty() != true)
+        {
+            queue.Insert(q.Remove());
+        }
+        return length;
+    }
+    public static bool inQueue(Queue<int> queue, int num)
+    {
+        bool found = false;
+        Queue<int> q = new Queue<int>();
+        while(queue.IsEmpty() != true)
+        { 
+            if (queue.Head() == num)
+            {
+                found = true;
+            }
+            q.Insert(queue.Remove());
+        }
+        while (q.IsEmpty() != true)
+        {
+            queue.Insert(q.Remove());
+        }
+        return found;
+    }
+    static void Main(string[] args)
+    {
+        Queue<int> queue = new Queue<int>();
+        for (int i = 0; i < 7; i++)
+        {
+            queue.Insert(i);
+        }
+        Console.WriteLine(findQueueLength(queue));
+        Console.WriteLine(inQueue(queue, 5));
+        Console.ReadKey();
+    }
+
+}
