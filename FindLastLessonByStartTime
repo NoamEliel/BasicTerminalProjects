@@ -1,0 +1,27 @@
+public bool IsLater(Lesson other)
+        {
+            if ((this.hh+this.mm) > (other.Gethh() + other.Getmm()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+
+        public void last(Lesson[] arr)
+        {
+            Lesson lastLesson = arr[0];
+            for (int i = 1; i < arr.Length; i++)
+            {
+                if (arr[i].IsLater(lastLesson))
+                {
+                    lastLesson = arr[i];
+                }
+            }
+            Console.WriteLine(lastLesson.Getid());
+        }
