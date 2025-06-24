@@ -1,0 +1,87 @@
+using System;
+
+namespace Exercise
+{
+    // Base class: Person
+    class Person
+    {
+        protected int age;
+        protected string name;
+
+        public Person(int age, string name)
+        {
+            this.age = age;
+            this.name = name;
+        }
+
+        public int GetAge() { return age; }
+        public string GetName() { return name; }
+
+        public void SetAge(int age) { this.age = age; }
+        public void SetName(string name) { this.name = name; }
+
+        public override string ToString()
+        {
+            return "Age is: " + age + " and name is: " + name;
+        }
+    }
+
+    // Derived class: Student
+    class Student : Person
+    {
+        private string baseClass;
+
+        public Student(string baseClass, int age, string name) : base(age, name)
+        {
+            this.baseClass = baseClass;
+        }
+
+        public string GetBaseClass() { return baseClass; }
+        public void SetBaseClass(string baseClass) { this.baseClass = baseClass; }
+
+        public override string ToString()
+        {
+            return $"Student - Base Class: {baseClass}, Name: {name}, Age: {age}";
+        }
+    }
+
+    // Derived class: Teacher
+    class Teacher : Person
+    {
+        private string subject;
+
+        public Teacher(string subject, int age, string name) : base(age, name)
+        {
+            this.subject = subject;
+        }
+
+        public string GetSubject() { return subject; }
+        public void SetSubject(string subject) { this.subject = subject; }
+
+        public override string ToString()
+        {
+            return $"Teacher - Subject: {subject}, Name: {name}, Age: {age}";
+        }
+    }
+
+    // Program class with Main method
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create and print Person
+            Person person = new Person(30, "Aviv");
+            Console.WriteLine(person.ToString());
+
+            // Create and print Student
+            Student student = new Student("10B", 17, "Noam");
+            Console.WriteLine(student.ToString());
+
+            // Create and print Teacher
+            Teacher teacher = new Teacher("Math", 40, "Tamar");
+            Console.WriteLine(teacher.ToString());
+
+            Console.ReadKey();
+        }
+    }
+}
