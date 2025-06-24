@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    internal class User
+    {
+        protected string user;
+
+        public User(string user)
+        {
+            this.user = user;
+        }
+        public virtual void ChangeValues()
+        {
+            Console.WriteLine("do you want to change the username? y/n");
+            if (Console.ReadLine() == "y")
+            {
+                Console.WriteLine("what do you want the new username to be?");
+                setUser(Console.ReadLine());
+            }
+        }
+        public void setUser(string username) { this.user = username; }
+        public string getUser() { return this.user; }
+
+
+    }
+    internal class Doggysitter : User
+    {
+        protected double pricePerHour;
+        public Doggysitter(double pricePerHour, string username) :base(username)
+        {
+            this.pricePerHour = pricePerHour;
+        }
+        public override void ChangeValues()
+        {
+            Console.WriteLine("do you want to change the price per hour? y/n");
+            if (Console.ReadLine() == "y")
+            {
+                Console.WriteLine("what do you want to change it to?");
+                setPricePerHour(double.Parse(Console.ReadLine()));
+            }
+            Console.WriteLine("do you want to change the name? y/n");
+            if (Console.ReadLine() == "y")
+            {
+                base.setUser(Console.ReadLine());
+            }
+        }
+        public void setPricePerHour(double pricePerHour) { this.pricePerHour = pricePerHour; }
+        public double getPricePerHour() { return this.pricePerHour; }
+        
+
+    }
+    internal class Client : User
+    {
+        protected string dog;
+        public Client(string dog, string username) : base(username)
+        {
+            this.dog = dog;
+        }
+        public override void ChangeValues()
+        {
+            Console.WriteLine("do you want to change the name of the dog? y/n");
+            if (Console.ReadLine() == "y")
+            {
+                Console.WriteLine("what do you want to change it to?");
+                setDog(Console.ReadLine());
+            }
+            Console.WriteLine("do you want to change the name? y/n");
+            if (Console.ReadLine() == "y")
+            {
+                base.setUser(Console.ReadLine());
+            }
+        }
+        public void setDog(string dog) { this.dog = dog; }
+        public string getDog() { return this.dog; }
+
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            User noam = new User("Noam");
+            Doggysitter habibi = new Doggysitter(60, "habibi");
+            Client liad = new Client("sunny", "liad");
+
+            noam.ChangeValues();
+            habibi.ChangeValues();
+            liad.ChangeValues();
+
+            Console.WriteLine($"User: {noam.getUser()}");
+            Console.WriteLine($"Doggysitter: {habibi.getUser()}, Price per hour: {habibi.getPricePerHour()}");
+            Console.WriteLine($"Client: {liad.getUser()}, Dog: {liad.getDog()}");
+
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
