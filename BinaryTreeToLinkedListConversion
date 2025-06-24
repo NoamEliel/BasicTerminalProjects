@@ -1,0 +1,168 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    public class BinNode<T>
+    {
+        private BinNode<T> left;
+        private T value;
+        private BinNode<T> right;
+
+
+        public BinNode(T value)
+        {
+            this.left = null;
+            this.value = value;
+            this.right = null;
+        }
+        public BinNode(BinNode<T> left, T value, BinNode<T> right)
+        {
+            this.left = left;
+            this.value = value;
+            this.right = right;
+        }
+        public T GetValue()
+        { return this.value; }
+        public BinNode<T> GetLeft()
+        { return this.left; }
+        public BinNode<T> GetRight()
+        { return this.right; }
+        public void Setvalue(T value)
+        {
+            this.value = value;
+        }
+        public void SetLeft(BinNode<T> left)
+        {
+            this.left = left;
+        }
+        public void SetRight(BinNode<T> right)
+        {
+            this.right = right;
+        }
+        public bool HasLeft()
+        {
+            return this.left != null;
+        }
+        public bool HasRight()
+        {
+            return this.right != null;
+        }
+        public override string ToString()
+        {
+            return this.value.ToString();
+        }
+    }
+
+    public class Node<T>
+    {
+        private T value;
+        private Node<T> next;
+        /* הפעולה בונה ומחזירה חוליה שהערך שלה הוא value ואין לה חוליה עוקבת **/
+        public Node(T value)
+        {
+            this.value = value;
+            this.next = null;
+        }
+        /*הפעולה בונה ומחזירה חוליה, שהערך שלה הוא value
+          והחוליה העוקבת לה היא החוליה next */
+        public Node(T value, Node<T> next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        /* הפעולה מחזירה את הערך של החוליה הנוכחית **/
+        public T GetValue()
+        {
+            return value;
+        }
+        /* הפעולה מחזירה את החוליה העוקבת לחוליה הנוכחית **/
+        public Node<T> GetNext()
+        {
+            return next;
+        }
+        /* הפעולה קובעת את ערך החוליה הנוכחית להיות  value **/
+        public void SetValue(T value)
+        {
+            this.value = value;
+        }
+        /* הפעולה קובעת את החוליה העוקבת לחוליה הנוכחית להיות החוליה next **/
+        public void SetNext(Node<T> next)
+        {
+            this.next = next;
+        }
+        /* הפעולה מחזירה מחרוזת המתארת את החוליה הנוכחית */
+
+
+       
+    }
+
+
+    
+
+
+    internal class Program
+    {
+        public static Node<int> convertTreeToList(BinNode<int> tree)
+        {
+            if (tree == null)
+            {
+                return null;
+            }
+
+            Node<int> final = new Node<int>(tree.GetValue());
+
+            Node<int> leftList = convertTreeToList(tree.GetLeft());
+            AppendList(final, leftList);
+
+            Node<int> rightList = convertTreeToList(tree.GetRight());
+            AppendList(final, rightList);
+
+            return final;
+        }
+
+        public static void AppendList(Node<int> mainList, Node<int> listToAppend)
+        {
+            if (listToAppend == null)
+            {
+                return;
+            }
+
+            Node<int> current = mainList;
+
+            while (current.GetNext() != null)
+            {
+                current = current.GetNext();
+            }
+
+            current.SetNext(listToAppend);
+        }
+        public static void printNodeList(Node<int> node)
+        {
+            while (node != null)
+            {
+                Console.WriteLine(node.GetValue());
+                node = node.GetNext();
+            }
+        }
+        static void Main(string[] args)
+        {
+            BinNode<int> node6a = new BinNode<int>(6); 
+            BinNode<int> node6b = new BinNode<int>(6); 
+            BinNode<int> node8 = new BinNode<int>(node6a, 8, null); 
+            BinNode<int> node2 = new BinNode<int>(node6b, 2, null); 
+            BinNode<int> root4 = new BinNode<int>(node8, 4, node2);
+
+            printNodeList(convertTreeToList(root4));
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
