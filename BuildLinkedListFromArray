@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Exercise
+{
+    class Node
+    {
+        private int value;
+        private Node next;
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public int getValue() { return this.value; }
+        public Node getNext() { return this.next; }
+        public void setNext(Node next) { this.next = next; }
+    }
+   
+    internal class Program
+    {
+        public static void printNodes(Node list)
+        {
+            Node pointer = list;
+            while (pointer != null)
+            {
+                Console.Write(pointer.getValue() + ", ");
+                pointer = pointer.getNext();
+            }
+        }
+        public static void MakeNodeList(int[] array)
+        {
+            Node Head = new Node(array[0],null);
+            Node current = new Node(array[0], Head);
+
+            for (int i = 1; i < array.Length; i++)
+            {
+                current.setNext(new Node(array[i], null));
+                current = current.getNext();
+            }
+
+        }
+        static void Main(string[] args)
+        {
+            int[] arr = new int[5] { 1, 2, 3, 4, 5 };
+            MakeNodeList(arr);
+            Console.ReadLine();
+        }
+    }
+}
