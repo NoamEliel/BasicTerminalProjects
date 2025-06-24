@@ -1,0 +1,58 @@
+using System;
+public class BinNode<T>
+{
+    public T Value { get; set; }
+    public BinNode<T> Left { get; set; }
+    public BinNode<T> Right { get; set; }
+
+    public BinNode(T value)
+    {
+        Value = value;
+        Left = null;
+        Right = null;
+    }
+}
+    
+public class Program
+{
+    public static int returnSumOfLargestIntegersThanX(BinNode<int> head, int x)
+    {
+        int sum = 0;
+        if (head == null)
+        {
+            return 0;
+        }
+        sum += returnSumOfLargestIntegersThanX(head.Left, x);
+        sum += returnSumOfLargestIntegersThanX(head.Right, x);
+
+        if (head.Value > x)
+        {
+            return head.Value;
+        }
+        else { return 0; }
+    }
+    public static void Main(string[] args)
+    {
+        var root = new BinNode<int>(10)
+        {
+            Left = new BinNode<int>(5)
+            {
+                Left = new BinNode<int>(2),
+                Right = new BinNode<int>(5)
+            },
+            Right = new BinNode<int>(15)
+            {
+                Left = new BinNode<int>(11),
+                Right = new BinNode<int>(20)
+            }
+        };
+
+       
+
+        Console.ReadKey();
+    }
+}
+
+
+
+
