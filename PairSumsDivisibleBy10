@@ -1,0 +1,74 @@
+using System;
+
+public class Program
+{
+    public class Node
+    {
+        private int value;
+        private Node next;
+
+        public Node(int value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(Node next) { this.next = next; }
+        public void SetValue(int value) { this.value = value; }
+        public int GetValue() { return this.value; }
+        public Node GetNext() { return this.next; }
+    }
+
+   
+    public static void Print(Node list)
+    {
+        Node p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+    public static void printIfDivisible(Node head)
+    {
+
+        Node scanned = head;
+        Node scanner = head;
+        while (scanned != null)
+        {
+            scanner = scanned;
+            while (scanner != null)
+            {
+                int num = ((scanned.GetValue() + scanner.GetValue())%10);
+                if (num == 0)
+                {
+                    Console.WriteLine(scanned.GetValue() + " and " + scanner.GetValue() + "  :  " + (scanned.GetValue() + scanner.GetValue()));
+                }
+                scanner = scanner.GetNext();
+            }
+            scanned = scanned.GetNext();
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+      
+        Node node7 = new Node(13, null);
+        Node node6 = new Node(2, node7);
+        Node node5 = new Node(14, node6);
+        Node node4 = new Node(5, node5);
+        Node node3 = new Node(17, node4);
+        Node node2 = new Node(18, node3);
+        Node node1 = new Node(1,node2);
+        printIfDivisible(node1);
+
+
+        Console.ReadKey();
+    }
+}
+
+
+
+
+
+
+
