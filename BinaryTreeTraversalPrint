@@ -1,0 +1,15 @@
+
+class Program
+{
+    public static void printAllVar(BinNode<int> tree)
+    {
+        Console.WriteLine(tree.GetValue());
+        if (tree.GetRight() != null)
+        {
+            printAllVar(tree.GetRight());
+        }
+        if (tree.GetLeft() != null)
+        {
+            printAllVar(tree.GetLeft());
+        }
+    }
