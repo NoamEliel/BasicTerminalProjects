@@ -1,0 +1,75 @@
+using System;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public class BinNode<T>
+    {
+        private int value;
+        private BinNode<int> next;
+
+        public BinNode(int value, BinNode<int> next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(BinNode<int> next) { this.next = next; }
+        public void SetValue(int value) { this.value = value; }
+        public int GetValue() { return this.value; }
+        public BinNode<int> GetNext() { return this.next; }
+    }
+
+
+    public static void Print(BinNode<int> list)
+    {
+        BinNode<int> p = list;
+        while (p != null)
+        {
+            Console.WriteLine(p.GetValue());
+            p = p.GetNext();
+        }
+    }
+    public static int findListLength(BinNode<int> head)
+    {
+        int length = 0;
+        while (head != null)
+        {
+            length++;
+            head = head.GetNext();
+        }
+        return length;
+    }
+
+    public static BinNode<int> removeFirstLast(BinNode<int> head)
+    {
+        BinNode<int> Ohead = head;
+        bool w = true;
+        while (w)
+        {
+            if (head.GetNext().GetNext() == null)
+            {
+                head.SetNext(null);
+                w = false;
+            }
+            else { head = head.GetNext(); }
+            
+        }
+        Ohead = Ohead.GetNext();
+        return Ohead;
+    }
+
+
+
+    public static void Main(string[] args)
+    {
+
+        BinNode<int> node4 = new BinNode<int>(4, null);
+        BinNode<int> node3 = new BinNode<int>(3, node4);
+        BinNode<int> node2 = new BinNode<int>(2, node3);
+        BinNode<int> node1 = new BinNode<int>(1, node2);
+        
+        Print(removeFirstLast(node1));
+
+        Console.ReadKey();
+    }
+}
