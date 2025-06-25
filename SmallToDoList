@@ -1,0 +1,133 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Tasks
+{
+
+    public class Node
+    {
+        private string value;
+        private Node next;
+
+        public Node(string value, Node next)
+        {
+            this.value = value;
+            this.next = next;
+        }
+        public void SetNext(Node next) { this.next = next; }
+        public void SetValue(string value) { this.value = value; }
+        public string GetValue() { return this.value; }
+        public Node GetNext() { return this.next; }
+    }
+
+    class Program
+    {
+        public static int returnNodeLength(Node node)
+        {
+            int Length = 0;
+            while(node != null)
+            {
+                Length++;
+                node = node.GetNext();
+            }
+            return Length;
+        }
+        public static void PrintNode(Node node)
+        {
+            int count = 1;
+            while (node.GetNext() != null)
+            {
+                Console.WriteLine(count + ": " +node.GetValue());
+                node = node.GetNext();count++;
+            }
+            Console.WriteLine(count + ": " + node.GetValue());
+        }
+
+        static void Main(string[] args)
+        {
+            Node To_mealprep = new Node("meal prep", null);
+            Node To_workout = new Node("workout", To_mealprep);
+            Node To_do = new Node("sleep", To_workout);
+            while (true)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Next/New/Complete");
+                string input = Console.ReadLine();
+                Node follower = To_do;
+                bool error = false;
+                if (input == "new" || input == "New")
+                {
+                    Console.WriteLine("what do you wanna add?");
+                    string added = Console.ReadLine();
+                    Console.WriteLine("what's the priority level? (1-10)");
+                    int priority = int.Parse(Console.ReadLine());
+                    bool end = false;
+                    if (priority < 1 || priority > 10)
+                    {
+                        Console.WriteLine("must try a number between 1 - 10!");
+                        error = true;
+                    }
+                    if (error != true)
+                    {
+                        if (priority == returnNodeLength(To_do) + 1)
+                        {
+                            end = true;
+                        }
+                        for (int i = 1; i < (priority - 1); i++)
+                        {
+                            if (follower.GetNext() != null)
+                            {
+                                follower = follower.GetNext();
+                            }
+                            else { end = true; }
+                        }
+                        if (end == true)
+                        {
+                            follower.SetNext(new Node(added, null));
+                        }
+                        else
+                        {
+                            Node temp = new Node(follower.GetNext().GetValue(), follower.GetNext().GetNext());
+                            follower.SetNext(new Node(added, temp));
+                        }
+                        PrintNode(To_do);
+                    }
+                }
+                if (input == "complete" || input == "Complete")
+                {
+                    Console.WriteLine("what did you complete?");
+                    string complete = Console.ReadLine();
+                    follower = To_do;
+                    while (follower.GetNext() != null)
+                    {
+                        if (follower.GetNext().GetValue() == complete)
+                        {
+                            if (follower.GetNext().GetNext() != null)
+                            {
+                                follower.SetNext(follower.GetNext().GetNext());
+                            }
+                            else
+                            {
+                                follower.SetNext(null);
+                            }
+                        }
+                        follower = follower.GetNext();
+                        if (To_do.GetValue() == complete)
+                        {
+                            To_do = To_do.GetNext();
+                            
+                        }
+                    }
+                    PrintNode(To_do);
+                }
+                if (input == "Next" || input == "next")
+                {
+                    Console.WriteLine(To_do.GetValue());
+                }
+            }
+        }
+    }
+}
