@@ -1,0 +1,189 @@
+using System;
+using System.IO;
+using System.Threading;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+
+namespace SeleniumTest
+{
+    public class Node
+    {
+        private string value;
+        private Node next;
+
+        public Node(string value, Node next = null)
+        {
+            this.value = value;
+            this.next = next;
+        }
+
+        public void SetNext(Node next) { this.next = next; }
+        public void SetValue(string value) { this.value = value; }
+        public string GetValue() { return this.value; }
+        public Node GetNext() { return this.next; }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            string filePath = @"C:\Users\sheep\Desktop\status_log.txt";
+
+            while (true)
+            {
+                Console.WriteLine("time:" + DateTime.Now.TimeOfDay); Node head = null;
+                Node tail = null;
+
+                try
+                {
+                    using (IWebDriver driver = new ChromeDriver())
+                    {
+                        driver.Manage().Window.Maximize();
+
+                        // Step 1: Navigate to login
+                        string url = "https://discord.com/channels/@me/1367395472573988966";
+                        driver.Navigate().GoToUrl(url);
+                        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+                        try
+                        {
+                            wait.Until(drv =>
+                            {
+                                try
+                                {
+                                    return drv.FindElement(By.XPath("//button[div[text()='Continue in Browser']]")) != null;
+                                }
+                                catch (NoSuchElementException) { return false; }
+                            });
+
+                            var continueButton = driver.FindElement(By.XPath("//button[div[text()='Continue in Browser']]"));
+                            continueButton.Click();
+                            Console.WriteLine("✅ Clicked 'Continue in Browser'");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("❌ Error clicking browser button: " + ex.Message);
+                        }
+
+                        // Step 2: Login
+                        Thread.Sleep(1000);
+                        driver.FindElement(By.Name("email")).SendKeys("email@gmail.com");
+                        driver.FindElement(By.Name("password")).SendKeys("12345678");
+                        driver.FindElement(By.CssSelector("button[type='submit']")).Click();
+                        Thread.Sleep(10000);
+
+                        // Step 3: Navigate to DM
+                        driver.Navigate().GoToUrl("https://discord.com/channels/@me/1156858200591704076");
+                        Thread.Sleep(10000);
+
+                        while (true)
+                        {
+                            Console.WriteLine("time:" + DateTime.Now.TimeOfDay);
+                            string cur_result = "";
+                            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                            bool contentExists = false;
+
+                            try
+                            {
+                                contentExists = wait.Until(drv =>
+                                    drv.FindElements(By.CssSelector("div.content_ab8609")).Count > 0);
+                            }
+                            catch (WebDriverTimeoutException)
+                            {
+                                Console.WriteLine("⚠️ No status content found.");
+                            }
+
+                            if (contentExists)
+                            {
+                                Console.WriteLine("✅ Extracting status...");
+
+                                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                                string script = @"
+                                    const contentDiv = document.querySelector('div.content_ab8609');
+                                    if (!contentDiv) return '❌ Couldn\'t find the content div.';
+                                    const emoji = contentDiv.querySelector('img');
+                                    const emojiAlt = emoji ? emoji.getAttribute('alt') : 'No emoji';
+                                    const textDiv = contentDiv.querySelector('div.statusText_ab8609');
+                                    const text = textDiv ? textDiv.textContent.trim() : 'No text found';
+                                    return `🟢 Extracted data:\nEmoji: ${emojiAlt}\nText: ${text}`;";
+
+                                string result = js.ExecuteScript(script).ToString();
+                                Console.WriteLine(result);
+                                cur_result = result;
+
+                                if (!ContainsNode(head, result))
+                                {
+                                    Node newNode = new Node(result);
+                                    if (head == null)
+                                    {
+                                        head = newNode;
+                                        tail = newNode;
+                                    }
+                                    else
+                                    {
+                                        tail.SetNext(newNode);
+                                        tail = newNode;
+                                    }
+
+                                    Console.WriteLine("✅ New finding added to linked list.");
+                                    Console.WriteLine("time:" + DateTime.Now.TimeOfDay);
+
+                                    try
+                                    {
+                                        File.AppendAllText(filePath, result + Environment.NewLine + Environment.NewLine);
+                                        Console.WriteLine("--- Saved to file.");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine("--- Error saving to file: " + ex.Message);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("🔁 Duplicate detected. Skipping.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("--- Skipping extraction — no status found.");
+                            }
+
+                            Console.WriteLine(cur_result);
+                            Thread.Sleep(5000);
+
+                            // Optional: check if browser session is still alive
+                            try
+                            {
+                                _ = driver.CurrentWindowHandle;
+                            }
+                            catch (WebDriverException e)
+                            {
+                                Console.WriteLine("❌ Browser crashed or closed: " + e.Message);
+                                break; // Exit inner loop and restart whole process
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("🔥 Fatal error occurred. Restarting browser... " + ex.Message);
+                    Thread.Sleep(5000);
+                }
+            }
+        }
+
+        static bool ContainsNode(Node head, string value)
+        {
+            Node current = head;
+            while (current != null)
+            {
+                if (current.GetValue() == value)
+                    return true;
+                current = current.GetNext();
+            }
+            return false;
+        }
+    }
+}
